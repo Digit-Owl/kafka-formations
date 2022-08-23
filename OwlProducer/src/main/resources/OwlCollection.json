@@ -1,0 +1,77 @@
+{
+	"info": {
+		"_postman_id": "6bbc29aa-0bf7-40e5-99eb-dea85b914da2",
+		"name": "OwlCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16935759"
+	},
+	"item": [
+		{
+			"name": "Push an Owl",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/owl/send?id=9v0b9c40-owl2&name=Stanley&species=Barn&age=43&haveRing=false",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"owl",
+						"send"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "9v0b9c40-owl2",
+							"description": "The Owl's id"
+						},
+						{
+							"key": "name",
+							"value": "Stanley",
+							"description": "The Owl's name"
+						},
+						{
+							"key": "species",
+							"value": "Barn",
+							"description": "The Owl's specie"
+						},
+						{
+							"key": "age",
+							"value": "43",
+							"description": "The Owl's age"
+						},
+						{
+							"key": "haveRing",
+							"value": "false",
+							"description": "True if the Owl has a ring, false otherwise"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/owl/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"owl",
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
