@@ -12,6 +12,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
 
 import java.util.Properties;
 
@@ -60,23 +61,23 @@ public class OwlConsumerConfig {
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, consumerConfiguration().getAutoCommitInterval());
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, consumerConfiguration().getAutoOffsetReset());
 
-        if (!securityProtocol.isEmpty()) {
+        if (StringUtils.hasText(securityProtocol)) {
             props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, securityProtocol);
         }
 
-        if (!saslConfiguration().getMechanism().isEmpty() && !saslConfiguration().getJaasConfig().isEmpty()) {
+        if (StringUtils.hasText(saslConfiguration().getMechanism()) && StringUtils.hasText(saslConfiguration().getJaasConfig())) {
             props.put("sasl.mechanism", saslConfiguration().getMechanism());
             props.put("sasl.jaas.config", saslConfiguration().getJaasConfig());
         }
 
-        if (!sslConfiguration().getTrustStoreLocation().isEmpty() && !sslConfiguration().getTrustStorePassword().isEmpty()) {
+        if (StringUtils.hasText(sslConfiguration().getTrustStoreLocation()) && StringUtils.hasText(sslConfiguration().getTrustStorePassword())) {
             props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, sslConfiguration().getTrustStoreLocation());
             props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, sslConfiguration().getTrustStorePassword());
         }
 
         props.put("schema.registry.url", kafkaProperties().getSchemaRegistryUrl());
 
-        if (!kafkaProperties().getBasicAuthCredentialsSource().isEmpty() && !kafkaProperties().getSchemaRegistryBasicAuthUserInfo().isEmpty()) {
+        if (StringUtils.hasText(kafkaProperties().getBasicAuthCredentialsSource()) && StringUtils.hasText(kafkaProperties().getSchemaRegistryBasicAuthUserInfo())) {
             props.put("basic.auth.credentials.source", kafkaProperties().getBasicAuthCredentialsSource());
             props.put("basic.auth.user.info", kafkaProperties().getSchemaRegistryBasicAuthUserInfo());
         }
