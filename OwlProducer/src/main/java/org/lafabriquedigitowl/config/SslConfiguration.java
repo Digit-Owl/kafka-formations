@@ -1,11 +1,8 @@
 package org.lafabriquedigitowl.config;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Getter
-@Setter
-public class SslConfiguration {
-    private String trustStoreLocation;
-    private String trustStorePassword;
+@ConfigurationProperties(prefix = "spring.kafka.ssl")
+public record SslConfiguration(String trustStoreLocation, String trustStorePassword) {
+
 }

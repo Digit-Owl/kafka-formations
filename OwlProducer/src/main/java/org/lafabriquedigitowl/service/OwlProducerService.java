@@ -5,9 +5,8 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.lafabriquedigitowl.config.TemplateConfiguration;
 import org.lafabriquedigitowl.producer.OwlProducer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -19,8 +18,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Log4j2
 public class OwlProducerService {
 
-    @Value("${spring.kafka.template.default-topic}")
-    private String topic;
+    private final TemplateConfiguration templateConfiguration;
 
     private final Producer<String, Owl> producer;
 
@@ -28,8 +26,8 @@ public class OwlProducerService {
     private final AtomicLong messageSentSuccessfully = new AtomicLong();
     private final AtomicLong messageWithError = new AtomicLong();
 
-    @Autowired
-    public OwlProducerService(Producer<String, Owl> producer) {
+    public OwlProducerService(TemplateConfiguration templateConfiguration, Producer<String, Owl> producer) {
+        this.templateConfiguration = templateConfiguration;
         this.producer = producer;
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -42,7 +40,7 @@ public class OwlProducerService {
     public Future<RecordMetadata> sendMessage(Owl owl) {
         messageToSend.incrementAndGet();
 
-        ProducerRecord<String, Owl> producerOwlRecord = new ProducerRecord<>(topic, owl.getId().toString(), owl);
+        ProducerRecord<String, Owl> producerOwlRecord = new ProducerRecord<>(templateConfiguration.defaultTopic(), owl.getId().toString(), owl);
 
         OwlProducer owlProducer = new OwlProducer(producer, (recordMetadata, exception) -> {
             if (exception == null) {
