@@ -16,10 +16,10 @@ import org.springframework.util.StringUtils;
 import java.util.Properties;
 
 @Configuration
-public class OwlConsumerConfig {
+public class OwlConsumerConfiguration {
 
     @Autowired
-    private SpringKafkaConfig springKafkaConfig;
+    private SpringKafkaConfiguration springKafkaConfiguration;
 
     @Autowired
     private ConsumerConfiguration consumerConfiguration;
@@ -31,13 +31,13 @@ public class OwlConsumerConfig {
     public SslConfiguration sslConfiguration;
 
     @Autowired
-    public KafkaProperties kafkaProperties;
+    public KafkaPropertiesConfiguration kafkaPropertiesConfiguration;
 
     @Bean
     public Properties consumerProperties() {
         Properties props = new Properties();
 
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, springKafkaConfig.bootstrapServers());
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, springKafkaConfiguration.bootstrapServers());
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
 
@@ -46,8 +46,8 @@ public class OwlConsumerConfig {
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, consumerConfiguration.autoCommitInterval());
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, consumerConfiguration.autoOffsetReset());
 
-        if (StringUtils.hasText(springKafkaConfig.securityProtocol())) {
-            props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, springKafkaConfig.securityProtocol());
+        if (StringUtils.hasText(springKafkaConfiguration.securityProtocol())) {
+            props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, springKafkaConfiguration.securityProtocol());
         }
 
         if (StringUtils.hasText(saslConfiguration.mechanism()) && StringUtils.hasText(saslConfiguration.jaasConfig())) {
@@ -60,11 +60,11 @@ public class OwlConsumerConfig {
             props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, sslConfiguration.trustStorePassword());
         }
 
-        props.put("schema.registry.url", kafkaProperties.schemaRegistryUrl());
+        props.put("schema.registry.url", kafkaPropertiesConfiguration.schemaRegistryUrl());
 
-        if (StringUtils.hasText(kafkaProperties.basicAuthCredentialsSource()) && StringUtils.hasText(kafkaProperties.schemaRegistryBasicAuthUserInfo())) {
-            props.put("basic.auth.credentials.source", kafkaProperties.basicAuthCredentialsSource());
-            props.put("basic.auth.user.info", kafkaProperties.schemaRegistryBasicAuthUserInfo());
+        if (StringUtils.hasText(kafkaPropertiesConfiguration.basicAuthCredentialsSource()) && StringUtils.hasText(kafkaPropertiesConfiguration.schemaRegistryBasicAuthUserInfo())) {
+            props.put("basic.auth.credentials.source", kafkaPropertiesConfiguration.basicAuthCredentialsSource());
+            props.put("basic.auth.user.info", kafkaPropertiesConfiguration.schemaRegistryBasicAuthUserInfo());
         }
 
         props.put("specific.avro.reader", true);
