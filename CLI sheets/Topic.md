@@ -1,4 +1,4 @@
-# The list of topics
+# Display the list of topics
 ./kafka-topics.sh --command-config sample.properties --bootstrap-server url:port --list
 
 # Create a topic with 10 partitions, RF 3 min isr 2
