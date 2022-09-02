@@ -1,11 +1,8 @@
 package org.lafabriquedigitowl.config;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Getter
-@Setter
-public class SaslConfiguration {
-    private String mechanism;
-    private String jaasConfig;
+@ConfigurationProperties(prefix = "spring.kafka.sasl")
+public record SaslConfiguration(String mechanism, String jaasConfig) {
+
 }

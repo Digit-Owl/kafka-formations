@@ -15,11 +15,9 @@ public class OwlConsumer extends AbstractConsumer<String, Owl> {
             log.error(throwable);
         }, record -> {
             successCounter.incrementAndGet();
-            log.info(
-                    String.format(
-                            "%s [%d] offset=%d, key=%s, value=%s",
-                            record.topic(), record.partition(),
-                            record.offset(), record.key(), record.value()));
+            log.info("{} [{}] offset={}, key={}, value={}",
+                    record.topic(), record.partition(),
+                    record.offset(), record.key(), record.value());
         });
     }
 

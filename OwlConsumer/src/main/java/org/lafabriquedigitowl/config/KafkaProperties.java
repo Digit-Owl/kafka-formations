@@ -1,12 +1,9 @@
 package org.lafabriquedigitowl.config;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Getter
-@Setter
-public class KafkaProperties {
-    private String schemaRegistryUrl;
-    private String basicAuthCredentialsSource;
-    private String schemaRegistryBasicAuthUserInfo;
+@ConfigurationProperties(prefix = "spring.kafka.properties")
+public record KafkaProperties(String schemaRegistryUrl, String basicAuthCredentialsSource,
+                              String schemaRegistryBasicAuthUserInfo) {
+
 }

@@ -14,7 +14,7 @@ You need to have a Kafka cluster up and running with information about bootstrap
 
 After that, fill up the application.properties file
 
-In the application.properties file, the param spring.kafka.template.default-topic is inventory by default but you can customize it. 
+In the application.yml file, the param spring.kafka.template.default-topic is inventory by default but you can customize it.
 You need to create a topic in your Kafka cluster with the correct name
 
 Some of the consumer's properties can be modified to customize it

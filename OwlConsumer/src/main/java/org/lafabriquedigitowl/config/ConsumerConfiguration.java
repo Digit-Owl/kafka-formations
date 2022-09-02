@@ -1,13 +1,10 @@
 package org.lafabriquedigitowl.config;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Getter
-@Setter
-public class ConsumerConfiguration {
-    private String groupId;
-    private String enableAutoCommit;
-    private String autoCommitInterval;
-    private String autoOffsetReset;
+
+@ConfigurationProperties(prefix = "spring.kafka.consumer")
+public record ConsumerConfiguration(String groupId, String enableAutoCommit, String autoCommitInterval,
+                                    String autoOffsetReset) {
+
 }

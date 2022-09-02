@@ -40,7 +40,7 @@ public abstract class AbstractConsumer<K, V> {
             try {
                 mainThread.join();
             } catch (InterruptedException e) {
-                log.error("Unexpected error " + e);
+                log.error("Unexpected error {}", e);
             }
         });
 

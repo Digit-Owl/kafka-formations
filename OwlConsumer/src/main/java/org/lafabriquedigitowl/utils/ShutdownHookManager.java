@@ -1,6 +1,5 @@
 package org.lafabriquedigitowl.utils;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.*;
@@ -72,10 +71,14 @@ public class ShutdownHookManager {
         return runnables;
     }
 
-    @AllArgsConstructor
     private static class Hook {
         Runnable hook;
         int priority;
+
+        public Hook(Runnable hook, int priority) {
+            this.hook = hook;
+            this.priority = priority;
+        }
 
         @Override
         public int hashCode() {
