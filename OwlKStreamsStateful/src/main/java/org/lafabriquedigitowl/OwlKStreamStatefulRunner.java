@@ -4,8 +4,8 @@ import com.lafabriquedigitowl.Owl;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.streams.KafkaStreams;
+import org.lafabriquedigitowl.config.SpringKafkaConfiguration;
 import org.lafabriquedigitowl.kstreams.OwlKStreamStatefulTopology;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -17,17 +17,14 @@ import java.util.concurrent.CountDownLatch;
 @Log4j2
 public class OwlKStreamStatefulRunner implements CommandLineRunner {
 
-    @Value("${spring.kafka.input-topic-name}")
-    private String inputTopicName;
-
-    @Value("${spring.kafka.output-topic-name}")
-    private String outputTopicName;
+    private final SpringKafkaConfiguration springKafkaConfiguration;
 
     private final SpecificAvroSerde<Owl> owlSpecificAvroSerde;
 
     private final Properties kstreamProperties;
 
-    public OwlKStreamStatefulRunner(SpecificAvroSerde<Owl> owlSpecificAvroSerde, Properties kstreamProperties) {
+    public OwlKStreamStatefulRunner(SpringKafkaConfiguration springKafkaConfiguration, SpecificAvroSerde<Owl> owlSpecificAvroSerde, Properties kstreamProperties) {
+        this.springKafkaConfiguration = springKafkaConfiguration;
         this.owlSpecificAvroSerde = owlSpecificAvroSerde;
         this.kstreamProperties = kstreamProperties;
     }
@@ -35,7 +32,7 @@ public class OwlKStreamStatefulRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         try {
-            OwlKStreamStatefulTopology owlKStreamTopology = new OwlKStreamStatefulTopology(inputTopicName, outputTopicName, kstreamProperties, owlSpecificAvroSerde);
+            OwlKStreamStatefulTopology owlKStreamTopology = new OwlKStreamStatefulTopology(springKafkaConfiguration.inputTopicName(), springKafkaConfiguration.outputTopicName(), kstreamProperties, owlSpecificAvroSerde);
 
             KafkaStreams kafkaStreams = new KafkaStreams(owlKStreamTopology.buildTopology(), kstreamProperties);
             final CountDownLatch latch = new CountDownLatch(1);
