@@ -54,10 +54,10 @@ class OwlKStreamTopologyTest {
     }
 
     @Test
-    public void shouldFilter(){
+    public void shouldFilter() {
 
-        for(int i = 0 ; i < 20 ; i++){
-            inputTopic.pipeInput("key"+i, Owl.newBuilder().setId(""+i).setAge(i).setSpecies("Barn").setName("Stanley"+i).setHaveRing(i%5!=0).build());
+        for (int i = 0; i < 20; i++) {
+            inputTopic.pipeInput("key" + i, Owl.newBuilder().setId("" + i).setAge(i).setSpecies("Barn").setName("Stanley" + i).setHaveRing(i % 5 != 0).build());
         }
 
         assertEquals(4, outputTopic.readValuesToList().size());
