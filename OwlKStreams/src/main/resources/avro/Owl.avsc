@@ -1,0 +1,33 @@
+{
+  "namespace": "com.lafabriquedigitowl",
+  "type": "record",
+  "name": "Owl",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "name": "species",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "name": "age",
+      "type": "int"
+    },
+    {
+      "name": "haveRing",
+      "type": "boolean"
+    }
+  ]
+}

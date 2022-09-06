@@ -1,0 +1,23 @@
+spring:
+  main:
+    web-application-type: none
+  kafka:
+    bootstrap-servers: {TO COMPLETE}
+    security-protocol: {TO COMPLETE}
+    consumer:
+      group-id: my-owl-group-id
+      enable-auto-commit: false
+      auto-commit-interval: 1000
+      auto-offset-reset: earliest
+    template:
+      default-topic: inventory
+    sasl:
+      mechanism: {TO COMPLETE}
+      jaas-config: {TO COMPLETE}
+    ssl:
+      trust-store-location:
+      trust-store-password:
+    properties:
+      schema-registry-url: {TO COMPLETE}
+      basic-auth-credentials-source: {TO COMPLETE}
+      schema-registry-basic-auth-user-info: {TO COMPLETE}

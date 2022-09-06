@@ -1,0 +1,19 @@
+spring:
+  main:
+    web-application-type: none
+  kafka:
+    bootstrap-servers: {TO COMPLETE}
+    security-protocol: {TO COMPLETE}
+    application-id: my-kstream-id
+    input-topic-name: inventory
+    output-topic-name: toRing
+    sasl:
+      mechanism: {TO COMPLETE}
+      jaas-config: {TO COMPLETE}
+      ssl:
+        trust-store-location:
+        trust-store-password:
+    properties:
+      schema-registry-url: {TO COMPLETE}
+      basic-auth-credentials-source: {TO COMPLETE}
+      schema-registry-basic-auth-user-info: {TO COMPLETE}
