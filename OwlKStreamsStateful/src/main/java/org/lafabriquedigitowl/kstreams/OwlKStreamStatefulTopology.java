@@ -3,6 +3,9 @@ package org.lafabriquedigitowl.kstreams;
 import com.lafabriquedigitowl.Owl;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import lombok.extern.log4j.Log4j2;
+import org.apache.kafka.streams.KeyValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
@@ -14,15 +17,16 @@ import java.util.Properties;
 @Log4j2
 public record OwlKStreamStatefulTopology(String inputTopicName, String outputTopicName, Properties kstreamProperties,
                                          SpecificAvroSerde<Owl> owlSpecificAvroSerde) {
+    private static final Logger logger = LoggerFactory.getLogger(OwlKStreamStatefulTopology.class);
     public Topology buildTopology() {
         StreamsBuilder streamsBuilder = new StreamsBuilder();
         streamsBuilder
                 .stream(inputTopicName, Consumed.with(Serdes.String(), owlSpecificAvroSerde))
-                .peek((k, v) -> log.info("Observed event: {}::{}", k, v))
+                .peek((k, v) -> logger.info("Observed event: {}::{}", k, v))
                 .groupBy((s, owl) -> owl.getSpecies().toString())
                 .count()
                 .toStream()
-                .peek((k, v) -> log.info("Transformed event: {}::{}", k, v))
+                .peek((k, v) -> logger.info("Transformed event: {}::{}", k, v))
                 .to(outputTopicName, Produced.with(Serdes.String(), Serdes.Long()));
 
         return streamsBuilder.build();

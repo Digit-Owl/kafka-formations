@@ -49,7 +49,7 @@ public class OwlKStreamStatefulRunner implements CommandLineRunner {
             latch.await();
 
         } catch (Exception e) {
-            log.error(e);
+           // log.error(e);
         }
     }
 

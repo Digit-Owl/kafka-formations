@@ -1,16 +1,16 @@
 spring:
   kafka:
-    bootstrap-servers: {TO COMPLETE}
-    security-protocol: {TO COMPLETE}
+    bootstrap-servers: localhost:9092
+    security-protocol:
     template:
       default-topic: inventory
     sasl:
-      mechanism: {TO COMPLETE}
-      jaas-config: {TO COMPLETE}
+      mechanism:
+      jaas-config:
     ssl:
-      trust-store-location: {TO COMPLETE}
-      trust-store-password: {TO COMPLETE}
+      trust-store-location:
+      trust-store-password:
     properties:
-      schema-registry-url: {TO COMPLETE}
-      basic-auth-credentials-source: {TO COMPLETE}
-      schema-registry-basic-auth-user-info: {TO COMPLETE}
+      schema-registry-url: http://localhost:8081
+      basic-auth-credentials-source:
+      schema-registry-basic-auth-user-info:

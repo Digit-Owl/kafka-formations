@@ -1,12 +1,14 @@
 package org.lafabriquedigitowl.utils;
 
-import lombok.extern.log4j.Log4j2;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Log4j2
 public class ShutdownHookManager {
+
+    private static final Logger logger = LoggerFactory.getLogger(ShutdownHookManager.class);
+
     private static final ShutdownHookManager SHUTDOWN_HOOK_MANAGER = new ShutdownHookManager();
 
     private final Set<Hook> hooks = Collections.synchronizedSet(new HashSet<>());
@@ -21,12 +23,12 @@ public class ShutdownHookManager {
         Runtime.getRuntime().addShutdownHook(
                 new Thread(() -> {
                     SHUTDOWN_HOOK_MANAGER.shutdownInProgress.set(true);
-                    log.info("Shutdown detected...");
+                    logger.info("Shutdown detected...");
                     for (Runnable runnable : SHUTDOWN_HOOK_MANAGER.getShutdownhookInOrderOfPriority()) {
                         try {
                             runnable.run();
                         } catch (Exception exception) {
-                            log.error("Shutdownhook {} failed :: {}", runnable.getClass().getSimpleName(), exception);
+                            logger.error("Shutdownhook {} failed :: {}", runnable.getClass().getSimpleName(), exception);
                         }
                     }
                 })

@@ -1,6 +1,8 @@
 package org.lafabriquedigitowl.consumer;
 
-import lombok.extern.log4j.Log4j2;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -12,9 +14,9 @@ import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.StreamSupport;
 
-@Log4j2
 public abstract class AbstractConsumer<K, V> {
 
+    private static final Logger logger = LoggerFactory.getLogger(AbstractConsumer.class);
     protected final Consumer<K, V> consumer;
     protected final java.util.function.Consumer<Throwable> exceptionHandler;
     protected final java.util.function.Consumer<ConsumerRecord<K, V>> processor;
@@ -40,7 +42,7 @@ public abstract class AbstractConsumer<K, V> {
             try {
                 mainThread.join();
             } catch (InterruptedException e) {
-                log.error("Unexpected error {}", e);
+                logger.error("Unexpected error {}", e);
             }
         });
 
@@ -58,16 +60,16 @@ public abstract class AbstractConsumer<K, V> {
                 //Use async to be faster, but use en callback to log if an issue happens
                 consumer.commitAsync((offsets, exception) -> {
                     if (exception != null) {
-                        log.error("Commit failed for offsets {}", offsets, exception);
+                        logger.error("Commit failed for offsets {}", offsets, exception);
                     } else {
-                        if (log.isTraceEnabled()) {
-                            log.trace("Offets {} are succesfully committed", offsets);
+                        if (logger.isTraceEnabled()) {
+                            logger.trace("Offets {} are succesfully committed", offsets);
                         }
                     }
                 });
             }
         } catch (WakeupException e) {
-            log.warn("Shutting down...");
+            logger.warn("Shutting down...");
         } catch (RuntimeException ex) {
             exceptionHandler.accept(ex);
         } finally {

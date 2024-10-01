@@ -2,6 +2,8 @@ package org.lafabriquedigitowl.service;
 
 import com.lafabriquedigitowl.Owl;
 import lombok.extern.log4j.Log4j2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -18,6 +20,8 @@ import java.util.concurrent.atomic.AtomicLong;
 @Log4j2
 public class OwlProducerService {
 
+    private static final Logger logger = LoggerFactory.getLogger(OwlProducerService.class);
+
     private final TemplateConfiguration templateConfiguration;
 
     private final Producer<String, Owl> producer;
@@ -31,7 +35,7 @@ public class OwlProducerService {
         this.producer = producer;
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            log.info("Stop Producer gracefully");
+            logger.info("Stop Producer gracefully");
             producer.flush();
             producer.close(Duration.ofSeconds(10L));
         }));
@@ -45,10 +49,10 @@ public class OwlProducerService {
         OwlProducer owlProducer = new OwlProducer(producer, (recordMetadata, exception) -> {
             if (exception == null) {
                 messageSentSuccessfully.incrementAndGet();
-                log.info(displayMetadataForARecord(producerOwlRecord, recordMetadata));
+                logger.info(displayMetadataForARecord(producerOwlRecord, recordMetadata));
             } else {
                 messageWithError.incrementAndGet();
-                log.error(displayErrorForARecord(producerOwlRecord, exception));
+                logger.error(displayErrorForARecord(producerOwlRecord, exception));
             }
         });
 
